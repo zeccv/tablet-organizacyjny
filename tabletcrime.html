@@ -5,18 +5,67 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Criminal MDT</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #222; color: #eee; margin: 0; padding: 0; }
-    #login, #characterSelect, #mainPanel { max-width: 400px; margin: 2em auto; background:#333; padding: 1em; border-radius: 8px; }
-    input, button, select { width: 100%; padding: 0.6em; margin: 0.4em 0; border-radius: 4px; border: none; }
-    button { background: #1e90ff; color: #fff; font-weight: bold; cursor: pointer; }
-    button:hover { background: #0d6efd; }
-    nav button { width: auto; margin-right: 0.5em; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #141e30, #243b55);
+      color: #f1f1f1;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 480px;
+      margin: 3em auto;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 2em;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1em;
+    }
+    input, button, select {
+      width: 100%;
+      padding: 0.8em;
+      margin: 0.5em 0;
+      border-radius: 6px;
+      border: none;
+      font-size: 1em;
+    }
+    button {
+      background-color: #1abc9c;
+      color: white;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background-color: #16a085;
+    }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5em;
+      margin-top: 1em;
+    }
+    nav button {
+      flex: 1 1 auto;
+      background-color: #3498db;
+    }
+    nav button:hover {
+      background-color: #2980b9;
+    }
     .hidden { display: none; }
+    #tabContent {
+      margin-top: 1em;
+      background-color: rgba(255,255,255,0.05);
+      padding: 1em;
+      border-radius: 6px;
+    }
   </style>
 </head>
 <body>
-
-<div id="login">
+<div class="container" id="login">
   <h2>Logowanie / Rejestracja</h2>
   <input type="email" id="email" placeholder="Email" />
   <input type="password" id="password" placeholder="Hasło" />
@@ -25,7 +74,7 @@
   <p id="loginMessage"></p>
 </div>
 
-<div id="characterSelect" class="hidden">
+<div class="container hidden" id="characterSelect">
   <h2>Wybierz postać</h2>
   <select id="characterList"></select>
   <button id="btnChooseChar">Wybierz postać</button>
@@ -33,24 +82,23 @@
   <p id="charMessage"></p>
 </div>
 
-<div id="mainPanel" class="hidden">
-  <h2>Criminal MDT - Panel główny</h2>
+<div class="container hidden" id="mainPanel">
+  <h2>Criminal MDT - Panel</h2>
   <nav>
     <button data-tab="members">Członkowie</button>
     <button data-tab="tasks">Zadania</button>
     <button data-tab="locations">Lokalizacje</button>
     <button data-tab="equipment">Ekwipunek</button>
-    <button data-tab="logs">Logi działań</button>
+    <button data-tab="logs">Logi</button>
     <button data-tab="settings">Ustawienia</button>
-    <button id="btnLogoutMain">Wyloguj się</button>
+    <button id="btnLogoutMain">Wyloguj</button>
   </nav>
-  <div id="tabContent" style="margin-top:1em;">
-    <p>Wybierz zakładkę, aby zobaczyć zawartość.</p>
+  <div id="tabContent">
+    <p>Wybierz zakładkę powyżej.</p>
   </div>
 </div>
 
 <script>
-// Prosta wersja bez Firebase - tylko symulacja działania na GitHub Pages
 let loggedIn = false;
 let characters = [
   { name: 'Don Vincenzo', rank: 'Boss' },
@@ -75,12 +123,6 @@ function showCharacters() {
   });
 }
 
-function showMainPanel(index) {
-  charDiv.classList.add('hidden');
-  mainDiv.classList.remove('hidden');
-  tabContent.innerHTML = `<p>Wybrano postać: <strong>${characters[index].name}</strong> - ${characters[index].rank}</p>`;
-}
-
 document.getElementById('btnLogin').onclick = () => {
   loggedIn = true;
   loginDiv.classList.add('hidden');
@@ -98,7 +140,9 @@ document.getElementById('btnRegister').onclick = () => {
 document.getElementById('btnChooseChar').onclick = () => {
   const index = charList.value;
   if (index === '') return;
-  showMainPanel(index);
+  charDiv.classList.add('hidden');
+  mainDiv.classList.remove('hidden');
+  tabContent.innerHTML = `<p>Wybrano: <strong>${characters[index].name}</strong> - ${characters[index].rank}</p>`;
 };
 
 document.getElementById('btnLogoutFromChar').onclick = () => {
